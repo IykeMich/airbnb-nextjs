@@ -13,9 +13,11 @@ import toast from "react-hot-toast";
 import Button from "../Button";
 import { FcGoogle } from "react-icons/fc";
 import { signIn } from "next-auth/react";
+import useLoginModal from "@/app/hooks/UseLoginModal";
 
 const RegisterModal = () => {
     const registerModal = useRegisterModal();
+    const loginModal = useLoginModal();
     const [isLoading, setIsLoading] = useState(false);
 
     const {register,
@@ -43,6 +45,11 @@ const RegisterModal = () => {
             setIsLoading(false);
         })
     }
+
+    const toggle = useCallback(() => {
+        registerModal.onClose();
+        loginModal.onOpen();
+    }, [loginModal, registerModal])
 
     const bodyContent = (
         <div className="flex flex-col gap-4">
@@ -74,7 +81,7 @@ const RegisterModal = () => {
             <div className="text-neutral-500 text-center mt-4 font-light">
                 <div className="justify-center flex flex-row items-center gap-2">
                     <div>Already have an account ? </div>
-                    <div onClick={registerModal.onClose} 
+                    <div onClick={toggle} 
                         className="text-black font-normal cursor-pointer hover:underline">Log in</div>
                     
                 </div>
